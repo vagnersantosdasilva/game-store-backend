@@ -2,6 +2,7 @@ package br.com.supera.game.store;
 
 import java.util.List;
 
+import br.com.supera.game.store.model.Product;
 import com.github.dbunit.rules.DBUnitRule;
 import com.github.dbunit.rules.api.configuration.DBUnit;
 import com.github.dbunit.rules.api.dataset.DataSet;
