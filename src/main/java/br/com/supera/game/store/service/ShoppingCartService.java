@@ -28,14 +28,13 @@ public class ShoppingCartService {
         return userCart.get(user.getId());
     }
 
-    public ShoppingCart addProduct(Long id, User user, String orderBy, Boolean ascending) throws Exception {
+    public ShoppingCart addProduct(Long id, User user) throws Exception {
 
         Product product = productRepository.findProductById(id);
         if (product==null) throw new Exception("O produto solicitado não está registrado");
         if (getShoppingCart(user)!=null){
             ShoppingCart shoppingCart = getShoppingCart(user);
             shoppingCart.addProduct(product);
-            shoppingCart.sortProducts(orderBy,ascending);
             return shoppingCart;
         }
         ShoppingCart shoppingCart = createCart(user);
@@ -44,8 +43,8 @@ public class ShoppingCartService {
         return shoppingCart;
     }
 
-    public ShoppingCart removeProduct(Long id,User user,String orderBy,Boolean ascending) throws Exception{
-        ShoppingCart shoppingCart = getShoppingCart(user,orderBy,ascending);
+    public ShoppingCart removeProduct(Long id,User user) throws Exception{
+        ShoppingCart shoppingCart = getShoppingCart(user,"name",true);
         shoppingCart.remove(id);
         if (shoppingCart.getProducts().size()==0) {
             shoppingCart = new ShoppingCart();

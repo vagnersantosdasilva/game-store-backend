@@ -6,7 +6,7 @@ import br.com.supera.game.store.utils.ComparatorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Service
 public class GameStoreService {
@@ -23,8 +23,6 @@ public class GameStoreService {
         ComparatorUtils camparator = new ComparatorUtils(field,true);
         List<Product> products = productRepository.findAll();
 
-        products.stream()
-                .forEach(e->e.setImage(getFullPath(e.getImage())));
         products.sort(camparator);
         return products;
     }

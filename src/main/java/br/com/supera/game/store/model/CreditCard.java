@@ -1,12 +1,14 @@
 package br.com.supera.game.store.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
 public class CreditCard {
 
     @Id
+    @GeneratedValue
     private Integer id;
     private String cardNumber;
     private Integer expirationMonth;
