@@ -67,7 +67,7 @@ public class GameStoreController {
     }
 
     @GetMapping("/cart")
-    public ResponseEntity<?> getShoppingCart(@RequestBody User user,
+    public ResponseEntity<?> getShoppingCart(@RequestHeader ("user_id")Integer user,
                                              @RequestHeader("sorted_by")String orderby,
                                              @RequestHeader("ascending")Boolean ascending) throws Exception {
 
@@ -77,8 +77,10 @@ public class GameStoreController {
     }
 
     @PostMapping("/cart")
-    public ResponseEntity<?> createShoppingCart(@RequestBody User user) {
+    public ResponseEntity<?> createShoppingCart(@RequestHeader ("user_id")  Integer user) throws Exception {
+        System.out.println("id:"+user);
         ShoppingCart shoppingCart = shoppingCartService.createCart(user);
+        System.out.println("total:"+shoppingCart.getTotal());
         ResponseEntity response = new ResponseEntity(
                 shoppingCart, HttpStatus.CREATED
         );
@@ -86,7 +88,7 @@ public class GameStoreController {
     }
 
     @PostMapping("/cart/product/{productId}")
-    public ResponseEntity<?> addProduct(@PathVariable Long productId,@RequestBody User user) throws Exception {
+    public ResponseEntity<?> addProduct(@PathVariable Long productId,@RequestHeader ("user_id") Integer user) throws Exception {
         ShoppingCart sc = shoppingCartService.addProduct(productId,user);
         ResponseEntity <?> response = new ResponseEntity(sc,HttpStatus.OK);
         return response;
@@ -95,7 +97,7 @@ public class GameStoreController {
 
     @DeleteMapping("/cart/product/{id}")
     public ResponseEntity<?> removeProduct(@PathVariable("id") Long id,
-                                           @RequestBody User user)throws Exception{
+                                           @RequestHeader ("user_id") Integer user)throws Exception{
 
         ShoppingCart shoppingCart = shoppingCartService.removeProduct(id,user);
         ResponseEntity<?> response = new ResponseEntity(shoppingCart,HttpStatus.OK);
