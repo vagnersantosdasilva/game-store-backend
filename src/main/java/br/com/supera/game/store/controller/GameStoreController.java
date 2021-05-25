@@ -1,9 +1,8 @@
 package br.com.supera.game.store.controller;
 
-import br.com.supera.game.store.model.CreditCard;
-import br.com.supera.game.store.model.Product;
-import br.com.supera.game.store.model.ShoppingCart;
-import br.com.supera.game.store.model.User;
+import br.com.supera.game.store.model.*;
+import br.com.supera.game.store.service.CheckoutService;
+import br.com.supera.game.store.service.DTO.CheckoutDTO;
 import br.com.supera.game.store.service.GameStoreService;
 import br.com.supera.game.store.service.ShoppingCartService;
 
@@ -17,12 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 
 @Controller
@@ -31,11 +24,12 @@ public class GameStoreController {
 
     private GameStoreService gameStoreService;
     private ShoppingCartService shoppingCartService;
-
+    private CheckoutService checkoutService;
     @Autowired
-    public GameStoreController(GameStoreService gameStoreService , ShoppingCartService shoppingCartService){
+    public GameStoreController(GameStoreService gameStoreService , ShoppingCartService shoppingCartService , CheckoutService checkoutService){
         this.gameStoreService = gameStoreService;
         this.shoppingCartService = shoppingCartService ;
+        this.checkoutService = checkoutService;
     }
 
     @GetMapping("/games")
@@ -115,8 +109,14 @@ public class GameStoreController {
         return response;
     }
 
-}
+    @PostMapping("/checkout")
+    public ResponseEntity<?> checkout(@RequestBody CheckoutDTO checkout,
+                                      @RequestHeader ("user_id")Integer userId){
 
-/*
-* http://localhost:8081/gamestore/cart/product/image/call-of-duty-infinite-warfare.png
-* */
+        String responseOperator = checkoutService.pay(checkout,userId);
+        ResponseEntity<String> responseEntity = new ResponseEntity<String>(responseOperator,HttpStatus.OK);
+        return responseEntity;
+
+    }
+
+}

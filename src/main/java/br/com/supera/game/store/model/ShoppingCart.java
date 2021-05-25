@@ -74,4 +74,20 @@ public class ShoppingCart {
     }
 
     public BigDecimal getSubTotal(){return  subTotal;}
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
+    public void setFreight(BigDecimal freight) {
+        this.freight = freight;
+    }
+
+    public void setTotal(BigDecimal total) {
+        this.total = total;
+    }
+
+    public void setSubTotal(BigDecimal subTotal) {
+        this.subTotal = subTotal;
+    }
 }
