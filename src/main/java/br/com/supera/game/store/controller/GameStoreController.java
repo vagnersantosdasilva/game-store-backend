@@ -113,8 +113,8 @@ public class GameStoreController {
     public ResponseEntity<?> checkout(@RequestBody CheckoutDTO checkout,
                                       @RequestHeader ("user_id")Integer userId){
 
-        String responseOperator = checkoutService.pay(checkout,userId);
-        ResponseEntity<String> responseEntity = new ResponseEntity<String>(responseOperator,HttpStatus.OK);
+        checkoutService.pay(checkout,userId);
+        ResponseEntity<?> responseEntity = new ResponseEntity<>(null,HttpStatus.OK);
         return responseEntity;
 
     }

@@ -9,6 +9,7 @@ import br.com.supera.game.store.service.DTO.CheckoutDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Service
@@ -28,7 +29,7 @@ public class CheckoutService {
         this.checkoutRepository = checkoutRepository;
     }
 
-    public String pay (CheckoutDTO checkout ,Integer userId){
+    public Boolean pay (CheckoutDTO checkout ,Integer userId){
         if (isValidCheckout(checkout)) {
             Checkout check = new Checkout();
             check.setCreateAt(new Date());
@@ -36,11 +37,11 @@ public class CheckoutService {
             check.setEndereco(checkout.getEndereco());
             check.setCpf(checkout.getCpf());
             check.setName(checkout.getName());
-
-            check.setTotal(shoppingCartService.getShoppingCart(userId).getTotal());
+            if (shoppingCartService.getShoppingCart(userId) ==null) throw new RuntimeException("Carrinho não pode ser vazio!");
+            check.setTotal((shoppingCartService.getShoppingCart(userId).getTotal()));
             if (adapterApi.performPayment(checkout.getCreditCard(), check.getTotal())) {
                 checkoutRepository.save(check);
-                return "success";
+                return true;
             }
             else throw new RuntimeException("Erro na api de pagamento!");
 
